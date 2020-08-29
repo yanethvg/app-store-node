@@ -1,19 +1,19 @@
-import express = require("express");
+import express from 'express'
 
 export default class Server {
-  public app: express.Application;
-  public port: number;
+  public app: express.Application
+  public port: number
 
-  constructor(puerto: number) {
-    this.port = puerto;
-    this.app = express();
+  constructor(port: number) {
+    this.port = port
+    this.app = express()
   }
 
-  static init(puerto: number) {
-    return new Server(puerto);
+  static init(port: number): Server {
+    return new Server(port)
   }
 
-  start(callback: () => void) {
-    this.app.listen(this.port, callback);
+  start(callback: () => void): void {
+    this.app.listen(this.port, callback)
   }
 }
