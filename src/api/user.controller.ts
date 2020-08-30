@@ -1,28 +1,20 @@
-import { Request, Response, CookieOptions } from 'express'
-import { getRepository } from 'typeorm'
-import { EXPIRATION_TOKEN } from '../config/webtoken.config'
+import { Request, Response } from 'express'
 import { User } from '../models/User'
-import { generate_user, validate_password, generate_token } from '../services/auth.services'
+import { getRepository } from 'typeorm'
 
-export const signup = async (req: Request, res: Response): Promise<void> => {
+export const getUsers = async (req: Request, res: Response): Promise<void> => {
   try {
+    console.log(req.currentUser)
+    const take = Number(req.query.take) || 2
+    const currentPage = Number(req.query.page) || 1
+    const skip = (currentPage - 1) * take
     const userRepository = getRepository(User)
-    const { email } = req.body
-    const userExists = await userRepository.findOne({ where: { email } })
-    if (userExists) {
-      res.status(403).json({
-        err: 'Email is taken!'
-      })
-    } else {
-      const userSave = await generate_user(req.body)
-
-      const user = await userRepository.create(userSave)
-      await userRepository.save(user)
-
-      res.json({
-        message: 'Signup sucess! Please Login'
-      })
-    }
+    const [users, total] = await userRepository.findAndCount({
+      take: take,
+      skip: skip,
+      select: ['id', 'name', 'email', 'role', 'createdAt', 'updatedAt']
+    })
+    res.json({ users, count: total })
   } catch (err) {
     res.status(500).json({
       err
@@ -30,40 +22,6 @@ export const signup = async (req: Request, res: Response): Promise<void> => {
   }
 }
 
-export const signin = async (req: Request, res: Response): Promise<void> => {
-  const { email, password } = req.body
-  try {
-    const userRepository = getRepository(User)
-    const userDB = await userRepository.findOne({
-      where: { email },
-      select: ['id', 'name', 'email', 'password', 'role']
-    })
-    if (!userDB) {
-      res.status(401).json({
-        err: 'User with that email does not exist. Please signup.'
-      })
-    } else {
-      if (!(await validate_password(userDB, password))) {
-        res.status(400).json({
-          err: 'User with that email does not exist. Please signup.'
-        })
-      } else {
-        const { token, user } = generate_token(userDB)
-        res.cookie('t', token, { expire: new Date() + EXPIRATION_TOKEN } as CookieOptions)
-        res.json({
-          user,
-          token
-        })
-      }
-    }
-  } catch (err) {
-    res.status(500).json({
-      err
-    })
-  }
-}
-
-export const signout = (req: Request, res: Response): void => {
-  res.clearCookie('t')
-  res.json({ message: 'Signout success!' })
+export const getUser = (req: Request, res: Response): void => {
+  res.json(req.currentUser)
 }

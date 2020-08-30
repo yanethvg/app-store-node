@@ -8,22 +8,19 @@ import {
   UserAfterLoginInterface
 } from '../interfaces/auth.interface'
 
-export const generate_user = async (user: UserInterface): Promise<UserInterface> => {
+export const generateUser = async (user: UserInterface): Promise<UserInterface> => {
   const salt = await genSalt(SALT)
   const hashed_password = await hash(user.password, salt)
   const userSave = { ...user, password: hashed_password }
   return userSave as UserInterface
 }
 
-export const validate_password = async (
-  user: UserInterface,
-  password: string
-): Promise<boolean> => {
+export const validatePassword = async (user: UserInterface, password: string): Promise<boolean> => {
   const isValidate = await compare(password, user.password)
   return isValidate
 }
 
-export const generate_token = (user: UserAfterLoginInterface): UserTokenInterface => {
+export const generateToken = (user: UserAfterLoginInterface): UserTokenInterface => {
   const userSend = {
     id: user.id,
     name: user.name,
