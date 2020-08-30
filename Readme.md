@@ -29,3 +29,7 @@ https://orkhan.gitbook.io/typeorm/docs/using-ormconfig
 8. npm install reflect-metadata --save necesary from typeorm decorators
 
 9. [ClassValidator](https://www.npmjs.com/package/class-validator)
+
+10. [JsonWebToken](https://www.npmjs.com/package/jsonwebtoken)
+
+11. [UUID](https://www.npmjs.com/package/uuidv1)

@@ -1,5 +1,12 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm'
-import { IsEmail, IsDate } from 'class-validator'
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+  Index
+} from 'typeorm'
+import { IsEmail } from 'class-validator'
 
 export enum UserRole {
   ADMIN = 'admin',
@@ -13,12 +20,10 @@ export class User {
   id!: number
 
   @Column({ nullable: false })
-  firstName!: string
+  name!: string
 
-  @Column({ nullable: false })
-  lastName!: string
-
-  @Column({ nullable: false })
+  @Index('UQ_user_email', { unique: true })
+  @Column()
   @IsEmail()
   email!: string
 
@@ -31,19 +36,19 @@ export class User {
   @Column({
     type: 'enum',
     enum: UserRole,
-    default: UserRole.CLIENT,
-    nullable: false
+    default: UserRole.CLIENT
   })
   role!: UserRole
 
-  @Column({ nullable: false })
-  @IsDate()
-  createDate!: Date
+  @CreateDateColumn({ type: 'timestamp' })
+  createdAt!: Date
 
-  @Column({ nullable: false })
-  @IsDate()
-  updatedDate!: Date
-
-  @Column('blob', { nullable: true })
-  image!: Blob
+  @UpdateDateColumn({ type: 'timestamp' })
+  updatedAt!: Date
+  /*
+  @Column('blob', {
+    nullable: true,
+    name: 'graphic'
+  })
+  image!: Buffer*/
 }
