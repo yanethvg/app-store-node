@@ -32,4 +32,6 @@ https://orkhan.gitbook.io/typeorm/docs/using-ormconfig
 
 10. [JsonWebToken](https://www.npmjs.com/package/jsonwebtoken)
 
-11. [UUID](https://www.npmjs.com/package/uuidv1)
+11. [TypeScript-Bcrypt](https://www.npmjs.com/package/@types/bcrypt)
+
+12. [Crypt-TypeScript](https://www.npmjs.com/package/crypto-ts)

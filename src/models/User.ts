@@ -28,10 +28,7 @@ export class User {
   email!: string
 
   @Column({ nullable: false })
-  hashed_password!: string
-
-  @Column({ nullable: false })
-  salt!: string
+  password!: string
 
   @Column({
     type: 'enum',
