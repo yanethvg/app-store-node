@@ -30,8 +30,12 @@ https://orkhan.gitbook.io/typeorm/docs/using-ormconfig
 
 9. [ClassValidator](https://www.npmjs.com/package/class-validator)
 
-10. [JsonWebToken](https://www.npmjs.com/package/jsonwebtoken)
+10. [Cors](https://www.npmjs.com/package/cors)
 
-11. [TypeScript-Bcrypt](https://www.npmjs.com/package/@types/bcrypt)
+### Authentication
 
-12. [Crypt-TypeScript](https://www.npmjs.com/package/crypto-ts)
+11. [JsonWebToken](https://www.npmjs.com/package/jsonwebtoken)
+
+12. [TypeScript-Bcrypt](https://www.npmjs.com/package/@types/bcrypt)
+
+13. [Crypt-TypeScript](https://www.npmjs.com/package/crypto-ts)
