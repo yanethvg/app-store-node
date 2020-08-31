@@ -2,20 +2,24 @@ import { Request, Response, NextFunction } from 'express'
 import { verify } from 'jsonwebtoken'
 import { SEED } from '../config/webtoken.config'
 
-export const requireSignin = (req: Request, res: Response, next: NextFunction): void => {
+export const requireSignin = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
   const header = <string>req.get('Authorization')
   const token = header?.replace(/^Bearer\s/, '')
-  console.log(token)
   let jwtPayload
   try {
-    jwtPayload = <any>verify(token, SEED)
+    jwtPayload = <any>await verify(token, SEED)
+    req.auth = jwtPayload?.user
+    next()
   } catch (err) {
     res.status(401).json({
       err: 'Unauthorized'
     })
+    next(err)
   }
-  req.auth = jwtPayload.user
-  next()
 }
 
 export const hasAuthorization = (req: Request, res: Response, next: NextFunction): void => {

@@ -4,6 +4,7 @@ import express from 'express'
 import cors from 'cors'
 import authRoutes from './routes/auth.route'
 import userRoutes from './routes/user.route'
+import categoryRoutes from './routes/category.route'
 import { PORT } from './config/server.config'
 import { connectDB } from './database'
 
@@ -22,6 +23,7 @@ server.app.use(cors())
 //routes
 server.app.use('/api/auth', authRoutes)
 server.app.use('/api/user', userRoutes)
+server.app.use('/api/category', categoryRoutes)
 
 server.start(() => {
   console.log(`Servidor corriendo en el puerto ${PORT}`)

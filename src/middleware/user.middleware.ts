@@ -10,8 +10,8 @@ export const getUserById = async (
 ): Promise<void> => {
   try {
     const userRepository = getRepository(User)
-    const id_user = Number(id)
-    const user = await userRepository.findOne(id_user, {
+    const idUser = Number(id)
+    const user = await userRepository.findOne(idUser, {
       select: ['id', 'name', 'email', 'role', 'createdAt', 'updatedAt']
     })
     if (!user) {

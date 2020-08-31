@@ -17,7 +17,7 @@ export const getCategories = async (req: Request, res: Response): Promise<void> 
 export const getCategory = async (req: Request, res: Response): Promise<void> => {
   try {
     const categoryRepository = getRepository(Category)
-    const category = await categoryRepository.findOne(req.params.id)
+    const category = await categoryRepository.findOne(req.category.id)
     res.json({ category })
   } catch (err) {
     res.status(400).json({
@@ -44,7 +44,7 @@ export const createCategory = async (req: Request, res: Response): Promise<void>
 export const updateCategory = async (req: Request, res: Response): Promise<void> => {
   try {
     const categoryRepository = getRepository(Category)
-    const category = await categoryRepository.findOneOrFail(req.params.id)
+    const category = await categoryRepository.findOneOrFail(req.category.id)
     categoryRepository.merge(category, req.body)
     await categoryRepository.save(category)
     res.json({
@@ -60,7 +60,7 @@ export const updateCategory = async (req: Request, res: Response): Promise<void>
 export const deleteCategory = async (req: Request, res: Response): Promise<void> => {
   try {
     const categoryRepository = getRepository(Category)
-    await categoryRepository.delete(req.params.id)
+    await categoryRepository.delete(req.category.id)
     res.json({
       message: 'Category deleted successfully'
     })

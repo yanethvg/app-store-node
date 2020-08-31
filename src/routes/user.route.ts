@@ -5,7 +5,7 @@ import { requireSignin } from '../middleware/auth.middleware'
 
 const router = Router()
 
-router.route('/').get(getUsers)
+router.route('/').get(requireSignin, getUsers)
 router
   .route('/:userId')
   .get(requireSignin, getUser)
