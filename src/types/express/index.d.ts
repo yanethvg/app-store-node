@@ -1,9 +1,10 @@
-import { User } from '../../models/User'
+import { UserAfterLoginInterface } from '../../interfaces/auth.interface'
 
 declare global {
   namespace Express {
     export interface Request {
-      currentUser: User
+      currentUser: UserAfterLoginInterface
+      auth: UserAfterLoginInterface
     }
   }
 }

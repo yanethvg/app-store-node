@@ -15,7 +15,7 @@ export const getUsers = async (req: Request, res: Response): Promise<void> => {
     })
     res.json({ users, count: total })
   } catch (err) {
-    res.status(500).json({
+    res.status(400).json({
       err
     })
   }
