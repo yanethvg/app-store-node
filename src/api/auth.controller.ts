@@ -1,4 +1,4 @@
-import { Request, Response, CookieOptions } from 'express'
+import { Request, Response, CookieOptions, NextFunction } from 'express'
 import { getRepository } from 'typeorm'
 import { EXPIRATION_TOKEN } from '../config/webtoken.config'
 import { User } from '../models/User'

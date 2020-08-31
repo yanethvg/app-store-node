@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import { signup, signin, signout } from '../api/auth.controller'
-import { getUserById } from '../middleware/user.midleware'
+import { getUserById } from '../middleware/user.middleware'
 
 const router = Router()
 

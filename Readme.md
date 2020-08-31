@@ -39,3 +39,5 @@ https://orkhan.gitbook.io/typeorm/docs/using-ormconfig
 12. [TypeScript-Bcrypt](https://www.npmjs.com/package/@types/bcrypt)
 
 13. [Crypt-TypeScript](https://www.npmjs.com/package/crypto-ts)
+
+14. [Type-Express-Jwt](https://www.npmjs.com/package/@types/express-jwt)
