@@ -4,7 +4,6 @@ import { getRepository } from 'typeorm'
 
 export const getUsers = async (req: Request, res: Response): Promise<void> => {
   try {
-    console.log(req.currentUser)
     const take = Number(req.query.take) || 2
     const currentPage = Number(req.query.page) || 1
     const skip = (currentPage - 1) * take
@@ -24,4 +23,30 @@ export const getUsers = async (req: Request, res: Response): Promise<void> => {
 
 export const getUser = (req: Request, res: Response): void => {
   res.json(req.currentUser)
+}
+
+export const updateUser = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const userRepository = getRepository(User)
+    const user = await userRepository.findOneOrFail(req.currentUser.id)
+    userRepository.merge(user, req.body)
+    await userRepository.save(user)
+    res.json({ message: 'Updated successfully' })
+  } catch (err) {
+    res.status(400).json({
+      err
+    })
+  }
+}
+
+export const deleteUser = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const userRepository = getRepository(User)
+    await userRepository.delete(req.currentUser.id)
+    res.json({ message: 'Deleted successfully' })
+  } catch (err) {
+    res.status(400).json({
+      err
+    })
+  }
 }

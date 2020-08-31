@@ -11,12 +11,18 @@ export const getUserById = async (
   try {
     const userRepository = getRepository(User)
     const id_user = Number(id)
-    const user = await userRepository.findOneOrFail(id_user, {
+    const user = await userRepository.findOne(id_user, {
       select: ['id', 'name', 'email', 'role', 'createdAt', 'updatedAt']
     })
-    console.log(user)
-    req.currentUser = user
-    next()
+    if (!user) {
+      res.status(400).json({
+        err: 'User not found'
+      })
+      return
+    } else {
+      req.currentUser = user
+      next()
+    }
   } catch (err) {
     next(err)
   }
