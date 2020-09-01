@@ -11,7 +11,10 @@ export const getUsers = async (req: Request, res: Response): Promise<void> => {
     const [users, total] = await userRepository.findAndCount({
       take: take,
       skip: skip,
-      select: ['id', 'name', 'email', 'role', 'createdAt', 'updatedAt']
+      select: ['id', 'name', 'email', 'role', 'createdAt', 'updatedAt'],
+      order: {
+        id: 'DESC'
+      }
     })
     res.json({ users, count: total })
   } catch (err) {

@@ -5,12 +5,11 @@ import { requireSignin } from '../middleware/auth.middleware'
 
 const router = Router()
 
-router.route('/').get(requireSignin, getUsers)
-router
-  .route('/:userId')
-  .get(requireSignin, getUser)
-  .put(requireSignin, updateUser)
-  .delete(requireSignin, deleteUser)
+// use validate jwt
+router.use(requireSignin)
+
+router.route('/').get(getUsers)
+router.route('/:userId').get(getUser).put(updateUser).delete(deleteUser)
 
 // any route containing: userId, our app will first execute userById
 router.param('userId', getUserById)

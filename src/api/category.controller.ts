@@ -16,9 +16,17 @@ export const getCategories = async (req: Request, res: Response): Promise<void> 
 
 export const getCategory = async (req: Request, res: Response): Promise<void> => {
   try {
-    const categoryRepository = getRepository(Category)
-    const category = await categoryRepository.findOne(req.category.id)
-    res.json({ category })
+    const userRepository = getRepository(Category)
+    const idCategory = Number(req.params.id)
+    const category = await userRepository.findOne(idCategory)
+    if (!category) {
+      res.status(400).json({
+        err: 'Category not found'
+      })
+      return
+    } else {
+      res.json({ category })
+    }
   } catch (err) {
     res.status(400).json({
       err
@@ -44,7 +52,8 @@ export const createCategory = async (req: Request, res: Response): Promise<void>
 export const updateCategory = async (req: Request, res: Response): Promise<void> => {
   try {
     const categoryRepository = getRepository(Category)
-    const category = await categoryRepository.findOneOrFail(req.category.id)
+    const idCategory = Number(req.params.id)
+    const category = await categoryRepository.findOneOrFail(idCategory)
     categoryRepository.merge(category, req.body)
     await categoryRepository.save(category)
     res.json({
@@ -60,7 +69,9 @@ export const updateCategory = async (req: Request, res: Response): Promise<void>
 export const deleteCategory = async (req: Request, res: Response): Promise<void> => {
   try {
     const categoryRepository = getRepository(Category)
-    await categoryRepository.delete(req.category.id)
+    const idCategory = Number(req.params.id)
+    await categoryRepository.findOneOrFail(idCategory)
+    await categoryRepository.delete(idCategory)
     res.json({
       message: 'Category deleted successfully'
     })

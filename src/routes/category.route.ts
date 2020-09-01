@@ -8,20 +8,17 @@ import {
   deleteCategory,
   createCategory
 } from '../api/category.controller'
-import { getCategoryById } from '../middleware/category.middleware'
 
 const router = Router()
 
-router.route('/').get(requireSignin, getCategories).post(requireSignin, createCategory)
+// use validate jwt
+router.use(requireSignin)
 
-router
-  .route('/:categoryId')
-  .get(requireSignin, getCategory)
-  .put(requireSignin, updateCategory)
-  .delete(requireSignin, deleteCategory)
+router.route('/').get(getCategories).post(createCategory)
+
+router.route('/:id').get(getCategory).put(updateCategory).delete(deleteCategory)
 
 // any route containing: userId, our app will first execute userById
 router.param('userId', getUserById)
-router.param('categoryId', getCategoryById)
 
 export default router

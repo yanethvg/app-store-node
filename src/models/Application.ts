@@ -4,7 +4,8 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
-  ManyToOne
+  ManyToOne,
+  JoinColumn
 } from 'typeorm'
 import { Category } from './Category'
 
@@ -19,13 +20,22 @@ export class Application {
   @Column()
   price!: number
 
+  @Column({
+    default: false
+  })
+  status!: boolean
+
   @CreateDateColumn({ type: 'timestamp' })
   createdAt!: Date
 
   @UpdateDateColumn({ type: 'timestamp' })
   updatedAt!: Date
 
+  @Column({ type: 'int', nullable: true })
+  categoryId!: number
+
   @ManyToOne((type) => Category, (category) => category.applications)
+  @JoinColumn({ name: 'categoryId' })
   category!: Category
 
   @Column({
