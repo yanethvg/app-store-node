@@ -9,7 +9,7 @@ export const requireSignin = async (
 ): Promise<void> => {
   const header = <string>req.get('Authorization')
   const token = header?.replace(/^Bearer\s/, '')
-  let jwtPayload
+  let jwtPayload: any
   try {
     jwtPayload = <any>await verify(token, SEED)
     req.auth = jwtPayload?.user
