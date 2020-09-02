@@ -10,6 +10,6 @@ export class Category {
   @Column()
   name!: string
 
-  @OneToMany((type) => Application, (application) => application.category)
+  @OneToMany(() => Application, (application) => application.category)
   applications!: Application[]
 }

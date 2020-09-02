@@ -8,15 +8,17 @@ export const getApplications = async (req: Request, res: Response): Promise<void
     const currentPage = Number(req.query.page) || 1
     const skip = (currentPage - 1) * take
     const applicationRepository = getRepository(Application)
-    const [applications, total] = await applicationRepository.findAndCount({
-      take: take,
-      skip: skip,
-      select: ['id', 'name', 'price'],
-      order: {
-        id: 'DESC'
-      },
-      relations: ['category']
-    })
+
+    const [applications, total] = await applicationRepository
+      .createQueryBuilder('application')
+      .innerJoin('application.user', 'user')
+      .innerJoinAndSelect('application.category', 'category')
+      .addSelect(['user.id', 'user.name', 'user.role'])
+      .orderBy('application.id', 'DESC')
+      .skip(skip)
+      .take(take)
+      .getManyAndCount()
+
     res.json({ applications, count: total })
   } catch (err) {
     res.status(400).json({
@@ -28,9 +30,20 @@ export const getApplications = async (req: Request, res: Response): Promise<void
 export const getApplication = async (req: Request, res: Response): Promise<void> => {
   try {
     const applicationRepository = getRepository(Application)
-    const application = await applicationRepository.findOneOrFail(req.params.id, {
-      relations: ['category']
-    })
+    const application = await applicationRepository
+      .createQueryBuilder('application')
+      .innerJoin('application.user', 'user')
+      .innerJoinAndSelect('application.category', 'category')
+      .addSelect(['user.id', 'user.name', 'user.role'])
+      .where(`application.id = ${req.params.id}`)
+      .getOne()
+
+    if (!application) {
+      res.status(400).json({
+        err: 'Application not found'
+      })
+      return
+    }
     res.json({ application })
   } catch (err) {
     res.status(400).json({
@@ -42,7 +55,10 @@ export const getApplication = async (req: Request, res: Response): Promise<void>
 export const createApplication = async (req: Request, res: Response): Promise<void> => {
   try {
     const applicationRepository = getRepository(Application)
-    const application = await applicationRepository.create(req.body)
+    const application = await applicationRepository.create({
+      ...req.body,
+      userId: req.currentUser.id
+    })
     await applicationRepository.save(application)
     res.json({
       message: 'Application created successfully'

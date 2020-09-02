@@ -8,6 +8,7 @@ import {
   JoinColumn
 } from 'typeorm'
 import { Category } from './Category'
+import { User } from './User'
 
 @Entity()
 export class Application {
@@ -34,9 +35,16 @@ export class Application {
   @Column({ type: 'int', nullable: true })
   categoryId!: number
 
-  @ManyToOne((type) => Category, (category) => category.applications)
+  @Column({ type: 'int', nullable: true })
+  userId!: number
+
+  @ManyToOne(() => Category, (category) => category.applications)
   @JoinColumn({ name: 'categoryId' })
   category!: Category
+
+  @ManyToOne(() => User, (user) => user.applications)
+  @JoinColumn({ name: 'userId' })
+  user!: User
 
   @Column({
     type: 'bytea',

@@ -4,13 +4,14 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
-  Index
+  Index,
+  OneToMany
 } from 'typeorm'
 import { IsEmail } from 'class-validator'
+import { Application } from './Application'
 
 export enum UserRole {
   ADMIN = 'admin',
-  DEVELOPER = 'developer',
   CLIENT = 'client'
 }
 
@@ -42,10 +43,13 @@ export class User {
 
   @UpdateDateColumn({ type: 'timestamp' })
   updatedAt!: Date
-  /*
-  @Column('blob', {
-    nullable: true,
-    name: 'graphic'
+
+  @OneToMany(() => Application, (application) => application.user)
+  applications!: Application[]
+
+  @Column({
+    type: 'bytea',
+    nullable: true
   })
-  image!: Buffer*/
+  photo!: Buffer
 }

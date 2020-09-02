@@ -16,9 +16,11 @@ const router = Router()
 // use validate jwt
 router.use(requireSignin)
 
-router.route('/').get(getApplications).post(getCategoryById, createApplication)
+router.route('/').get(getApplications)
 
 router.route('/status/:id').get(updateStatusApplication)
+
+router.route('/:userId').post(getCategoryById, createApplication)
 
 router
   .route('/:id')
