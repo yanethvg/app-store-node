@@ -5,7 +5,9 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   ManyToOne,
-  JoinColumn
+  JoinColumn,
+  ManyToMany,
+  JoinTable
 } from 'typeorm'
 import { Category } from './Category'
 import { User } from './User'
@@ -33,14 +35,19 @@ export class Application {
   updatedAt!: Date
 
   @Column({ type: 'int', nullable: true })
-  categoryId!: number
-
-  @Column({ type: 'int', nullable: true })
   userId!: number
 
+  /*
+  @Column({ type: 'int', nullable: true })
+  categoryId!: number
+  
   @ManyToOne(() => Category, (category) => category.applications)
   @JoinColumn({ name: 'categoryId' })
-  category!: Category
+  category!: Category*/
+
+  @ManyToMany(() => Category)
+  @JoinTable()
+  categories!: Category[]
 
   @ManyToOne(() => User, (user) => user.applications)
   @JoinColumn({ name: 'userId' })

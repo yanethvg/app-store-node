@@ -1,5 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn, Index, OneToMany } from 'typeorm'
-import { Application } from './Application'
+import { Entity, Column, PrimaryGeneratedColumn, Index } from 'typeorm'
+//import { Application } from './Application'
 
 @Entity()
 export class Category {
@@ -9,7 +9,8 @@ export class Category {
   @Index({ unique: true })
   @Column()
   name!: string
-
+  /*
   @OneToMany(() => Application, (application) => application.category)
   applications!: Application[]
+  */
 }

@@ -1,7 +1,7 @@
 import { Router } from 'express'
 import { getUserById } from '../middleware/user.middleware'
 import { requireSignin } from '../middleware/auth.middleware'
-import { getCategoryById } from '../middleware/category.middleware'
+import { getCategoriesById } from '../middleware/category.middleware'
 import {
   getApplications,
   createApplication,
@@ -20,12 +20,12 @@ router.route('/').get(getApplications)
 
 router.route('/status/:id').get(updateStatusApplication)
 
-router.route('/:userId').post(getCategoryById, createApplication)
+router.route('/:userId').post(getCategoriesById, createApplication)
 
 router
   .route('/:id')
-  .put(getCategoryById, updateApplication)
-  .delete(getCategoryById, deleteApplication)
+  .put(getCategoriesById, updateApplication)
+  .delete(deleteApplication)
   .get(getApplication)
 
 // any route containing: userId, our app will first execute userById

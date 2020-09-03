@@ -12,7 +12,8 @@ export const getApplications = async (req: Request, res: Response): Promise<void
     const [applications, total] = await applicationRepository
       .createQueryBuilder('application')
       .innerJoin('application.user', 'user')
-      .innerJoinAndSelect('application.category', 'category')
+      //.innerJoinAndSelect('application.category', 'category') one to many
+      .leftJoinAndSelect('application.categories', 'category')
       .addSelect(['user.id', 'user.name', 'user.role'])
       .orderBy('application.id', 'DESC')
       .skip(skip)
@@ -33,8 +34,9 @@ export const getApplication = async (req: Request, res: Response): Promise<void>
     const application = await applicationRepository
       .createQueryBuilder('application')
       .innerJoin('application.user', 'user')
-      .innerJoinAndSelect('application.category', 'category')
       .addSelect(['user.id', 'user.name', 'user.role'])
+      //.innerJoinAndSelect('application.category', 'category') one to many
+      .leftJoinAndSelect('application.categories', 'category')
       .where(`application.id = ${req.params.id}`)
       .getOne()
 
@@ -55,8 +57,10 @@ export const getApplication = async (req: Request, res: Response): Promise<void>
 export const createApplication = async (req: Request, res: Response): Promise<void> => {
   try {
     const applicationRepository = getRepository(Application)
+    const categories = req.categories
     const application = await applicationRepository.create({
       ...req.body,
+      categories,
       userId: req.currentUser.id
     })
     await applicationRepository.save(application)
@@ -73,7 +77,9 @@ export const createApplication = async (req: Request, res: Response): Promise<vo
 export const updateApplication = async (req: Request, res: Response): Promise<void> => {
   try {
     const applicationRepository = getRepository(Application)
+    const categories = req.categories
     const application = await applicationRepository.findOneOrFail(req.params.id)
+    application.categories = categories
     applicationRepository.merge(application, req.body)
     await applicationRepository.save(application)
     res.json({
