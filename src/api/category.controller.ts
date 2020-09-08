@@ -38,9 +38,10 @@ export const createCategory = async (req: Request, res: Response): Promise<void>
   try {
     const categoryRepository = getRepository(Category)
     const category = await categoryRepository.create(req.body)
-    await categoryRepository.save(category)
+    const categorySave = await categoryRepository.save(category)
     res.json({
-      message: 'Category created successfully'
+      message: 'Category created successfully',
+      category: categorySave
     })
   } catch (err) {
     res.status(400).json({
@@ -55,9 +56,10 @@ export const updateCategory = async (req: Request, res: Response): Promise<void>
     const idCategory = Number(req.params.id)
     const category = await categoryRepository.findOneOrFail(idCategory)
     categoryRepository.merge(category, req.body)
-    await categoryRepository.save(category)
+    const categorySave = await categoryRepository.save(category)
     res.json({
-      message: 'Category updated successfully'
+      message: 'Category updated successfully',
+      category: categorySave
     })
   } catch (err) {
     res.status(400).json({
